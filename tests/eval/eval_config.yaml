@@ -1,0 +1,55 @@
+metrics_to_run:
+  - claims_evaluation_quality
+  - trap_identification_accuracy
+  - agent_turn_count
+
+custom_metrics:
+  - name: claims_evaluation_quality
+    prompt_template: |
+      You are an expert quality assurance evaluator for an Insurance Claims Concierge AI Agent. Your task is to evaluate the agent's final response given the user prompt and the full agent trace.
+
+      Please grade the response quality on a scale of 1 to 5 according to the following criteria:
+      1 (Poor): The response fails to handle the claim, gives incorrect coverage information, or ignores traps.
+      2 (Below Average): The response partially addresses the claim but misses key traps, lingo translations, or coverage details.
+      3 (Acceptable): The response adequately handles the claim but lacks clear explanations of traps or policy lingo.
+      4 (Good): The response is accurate, explains traps and lingo clearly, and correctly routes the claim with good user guidance.
+      5 (Excellent): The response is highly accurate, translates all jargon into plain English, proactively identifies all hidden traps, and gives clear, consumer-friendly guidance.
+
+      ### Target Evaluation:
+      User Prompt: {prompt}
+      Final Response: {response}
+      Full Agent Trace: {agent_data}
+
+      Return your evaluation as a valid JSON object matching this structure:
+      {
+        "score": <integer between 1 and 5>,
+        "explanation": "<detailed string explaining the rationale for the score assigned>"
+      }
+
+  - name: trap_identification_accuracy
+    prompt_template: |
+      You are an expert insurance analyst evaluating whether an AI claims concierge correctly identified financial traps (co-pays, sub-limits, room rent limits, exclusions) in an insurance claim scenario.
+
+      Score on a scale of 1 to 5:
+      1 (Poor): No traps were identified when they clearly exist, OR the agent approved a claim that should be flagged.
+      2 (Below Average): Some traps missed or incorrectly described.
+      3 (Acceptable): Main traps identified but explanations are too technical or incomplete.
+      4 (Good): All major traps correctly identified with clear, plain-English explanations.
+      5 (Excellent): All traps identified, explained in consumer-friendly language, AND the agent provided actionable advice on how to minimize the financial impact.
+
+      ### Target Evaluation:
+      User Prompt: {prompt}
+      Final Response: {response}
+      Full Agent Trace: {agent_data}
+
+      Return your evaluation as a valid JSON object:
+      {
+        "score": <integer between 1 and 5>,
+        "explanation": "<rationale>"
+      }
+
+  - name: agent_turn_count
+    custom_function: |
+      def evaluate(instance):
+          turns = (instance.get("agent_data") or {}).get("turns", [])
+          return {'score': len(turns)}

@@ -1,0 +1,76 @@
+{
+  "timestamp": "20260625_002511",
+  "results": [
+    {
+      "case_id": "approved_cashless_claim",
+      "prompt": "I need a cashless claim for policy POL999. I am admitted at Apollo Hospital for a knee surgery. The estimated cost is $2000.",
+      "expected_outcome": "approved",
+      "agent_response": "{\"traps\":[\"10% co-payment applies to knee surgery treatments\",\"Room rent limit is capped at $150/day\",\"Exclusions apply to pre-existing conditions and joint replacement waiting periods\"],\"explanations\":[\"Co-pay (Co-payment) is a portion of the medical bill, expressed as a percentage, that the policyholder is required to pay out of their own pocket.\",\"Sub-limit is a capping or maximum limit placed on specific coverage components, such as daily room rent or specific treatment types, within the overall policy coverage.\",\"Deductible is the initial amount of money that the policyholder must pay before the insurance company starts covering the medical expenses.\",\"Network refers to a group of hospitals and healthcare providers that have agreed to provide services to the insured members at pre-negotiated rates.\"],\"summary\":\"The claim evaluation for policy POL999 at Apollo Hospital for knee surgery with an estimated cost of $2,000.00 is generally feasible, but the claimant will encounter significant out-of-pocket costs due to the 10% co-payment clause and room rent sub-limits capped at $150/day. Pre-existing condition exclusions must also be verified to ensure coverage validity.\"}",
+      "scores": {
+        "correctness": 4,
+        "trap_detection": 3,
+        "plain_language": 5,
+        "helpfulness": 4,
+        "overall": 4.0,
+        "verdict": "The agent provided clear explanations of insurance terms but failed to explicitly confirm the approved status and flagged policy limitations when no traps were expected."
+      }
+    },
+    {
+      "case_id": "non_network_hospital_rejection",
+      "prompt": "Please initiate a cashless claim for my policy POL123 at City Care Hospital for a general check-up costing $300.",
+      "expected_outcome": "rejected_non_network",
+      "agent_response": "{\"traps\":[\"General check-ups are frequently excluded from standard health insurance coverage unless a specific OPD or wellness rider is active.\"],\"explanations\":[\"Co-pay is a specified percentage of the total medical bill that the insured person must pay out of pocket, while the insurance company covers the remaining balance.\",\"Sub-limit is a capping or limit placed on specific expenses, such as hospital room rent or specific treatments, within the policy.\",\"Deductible is the initial fixed amount the insured must pay out of pocket before the insurance policy starts paying for covered medical expenses.\",\"Network refers to the group of hospitals and healthcare providers that have partner agreements with the insurance company to provide cashless services or discounted rates.\"],\"summary\":\"The claim evaluation for Policy POL123 at City Care Hospital involves an estimated cost of $300.00 for a general check-up. Routine preventive check-ups are typically excluded from standard hospitalization policies. As specific network status, co-pays, and sub-limits were not specified in the input data, they should be audited to confirm if any OPD coverage applies.\"}",
+      "scores": {
+        "correctness": 2,
+        "trap_detection": 2,
+        "plain_language": 5,
+        "helpfulness": 2,
+        "overall": 2.8,
+        "verdict": "The agent failed to trigger the expected 'rejected_non_network' outcome, falsely flagged a trap when none was expected, and provided an internal audit summary instead of helpful, user-facing guidance."
+      }
+    },
+    {
+      "case_id": "excluded_treatment_rejection",
+      "prompt": "I need to file a cashless claim under policy POL123 at Fortis Hospital for Dental Cleaning. It costs around $200.",
+      "expected_outcome": "rejected_excluded",
+      "agent_response": "{\n  \"traps\": [\n    \"Dental treatments, such as Dental Cleaning, are frequently excluded from standard health insurance policies.\",\n    \"Network status for Fortis Hospital must be verified to prevent out-of-network surcharges.\"\n  ],\n  \"explanations\": [\n    \"Exclusion: A provision within an insurance policy that eliminates coverage for certain designated risks, situations, or treatments.\",\n    \"Network: A system of contracted doctors, hospitals, and healthcare providers that have agreed to provide services at pre-negotiated discounted rates.\"\n  ],\n  \"summary\": \"The claim submitted under policy POL123 is for a Dental Cleaning at Fortis Hospital with an estimated cost of $200.0. The primary risk is that preventive dental procedures are widely excluded from standard medical insurance plans unless a dedicated dental add-on or rider is active. Additionally, Fortis Hospital's network status must be validated to ensure coverage eligibility.\"\n}",
+      "scores": {
+        "correctness": 5,
+        "trap_detection": 3,
+        "plain_language": 5,
+        "helpfulness": 4,
+        "overall": 4.3,
+        "verdict": "The agent correctly identified the exclusion of dental cleaning, but flagged standard policy terms as 'traps' when no traps were expected."
+      }
+    },
+    {
+      "case_id": "claim_with_traps_copay",
+      "prompt": "I want to admit myself at Max Hospital for an appendix operation. My policy is POL123 and the cost is $3000.",
+      "expected_outcome": "human_gate",
+      "agent_response": "{\n  \"traps\": [\n    \"Hospital network status for Max Hospital is unverified in the provided details, presenting a potential out-of-network billing risk.\",\n    \"Policy-specific co-payments and room rent sub-limits are not explicitly defined, which may result in unexpected out-of-pocket expenses.\"\n  ],\n  \"explanations\": [\n    \"Network refers to the list of hospitals and doctors that have an agreement with the insurance provider to offer services at pre-negotiated, discounted rates.\",\n    \"Co-pay is the share of the medical bill (usually a percentage) that the policyholder is required to pay from their own pocket.\",\n    \"Sub-limit is a cap placed by the insurer on a specific type of expense, such as hospital room rent or a specific surgical procedure.\"\n  ],\n  \"summary\": \"The claim evaluation is for an appendix operation at Max Hospital under policy POL123, with an estimated cost of $3,000.00. While the procedure is standard, the provided data does not confirm whether Max Hospital is in-network or if any sub-limits apply. It is highly recommended to verify network status and pre-authorise the surgery to avoid unexpected financial liability.\"\n}",
+      "scores": {
+        "correctness": 5,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 5,
+        "overall": 5.0,
+        "verdict": "The agent performed exceptionally well by accurately identifying hidden financial risks, translating complex insurance jargon into plain English, and providing clear, actionable next steps."
+      }
+    },
+    {
+      "case_id": "lingo_explanation_request",
+      "prompt": "What does co-payment mean? My claim form says I have a 10% co-pay and I don't understand it.",
+      "expected_outcome": "explanation",
+      "agent_response": "{\"traps\":[\"Missing policy ID prevents verification of coverage limits and exclusions\",\"Unidentified hospital prevents confirmation of in-network status\"],\"explanations\":[\"Co-pay is a percentage of the claim amount that the policyholder must pay out-of-pocket\",\"Sub-limit is a cap on the maximum payout for a specific benefit or category like room rent\",\"Network refers to healthcare providers contracted with the insurer to offer services at pre-negotiated rates\"],\"summary\":\"The claim evaluation cannot be completed due to missing policy, treatment, and hospital information, posing a critical risk of complete claim denial or significant out-of-pocket costs.\"}",
+      "scores": {
+        "correctness": 2,
+        "trap_detection": 1,
+        "plain_language": 4,
+        "helpfulness": 2,
+        "overall": 2.3,
+        "verdict": "The agent failed by hallucinating a failed claim evaluation and flagging non-existent traps instead of simply providing the requested explanation for a basic insurance term."
+      }
+    }
+  ],
+  "average_score": 3.6799999999999997
+}

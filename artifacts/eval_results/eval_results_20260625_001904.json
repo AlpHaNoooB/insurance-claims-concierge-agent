@@ -1,0 +1,76 @@
+{
+  "timestamp": "20260625_001904",
+  "results": [
+    {
+      "case_id": "approved_cashless_claim",
+      "prompt": "I need a cashless claim for policy POL999. I am admitted at Apollo Hospital for a knee surgery. The estimated cost is $2000.",
+      "expected_outcome": "approved",
+      "agent_response": "{\n  \"traps\": [],\n  \"explanations\": [\n    \"Co-pay: A co-payment is a fixed amount you pay for a covered health service after you've paid your deductible. For example, if your co-pay is $20 for a doctor's visit, you pay that amount directly.\",\n    \"Sub-limit: A sub-limit is a cap on the amount an insurance policy will pay for a specific type of expense, even if the overall sum insured is higher. For instance, a policy might cover hospital bills up to $100,000, but only $150 per day for room rent.\",\n    \"Deductible: This is the amount of money you must pay out-of-pocket for medical expenses before your insurance coverage begins to pay. If your deductible is $1000, you pay the first $1000 of covered expenses yourself.\",\n    \"Network: Refers to a group of healthcare providers (like hospitals and doctors) that have an agreement with your insurance company to provide services at negotiated rates. 'In-network' providers are usually more affordable than 'out-of-network' providers.\"\n  ],\n  \"summary\": \"This claim for a knee surgery at Apollo Hospital, with an estimated cost of $2000.0 under policy POL999, has been noted. Based on the provided data, specific details regarding the hospital's network status, applicable co-payment percentages, room rent sub-limits, or any policy exclusions were not specified. For a comprehensive claims risk audit, these policy coverage details are typically reviewed to determine potential out-of-pocket expenses or coverage limitations.\"\n}",
+      "scores": {
+        "correctness": 1,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 2,
+        "overall": 3.3,
+        "verdict": "The agent failed to approve the claim as expected, instead requesting more information, despite providing excellent explanations of insurance terms."
+      }
+    },
+    {
+      "case_id": "non_network_hospital_rejection",
+      "prompt": "Please initiate a cashless claim for my policy POL123 at City Care Hospital for a general check-up costing $300.",
+      "expected_outcome": "rejected_non_network",
+      "agent_response": "{\n  \"traps\": [],\n  \"explanations\": [\n    \"Co-payment (Co-pay) is a fixed amount you pay for a covered health care service after you've paid your deductible. For example, you might pay $20 for a doctor's visit and your insurance company pays the rest.\",\n    \"Sub-limit refers to a cap on the amount an insurer will pay for a specific type of expense, even if the overall policy sum insured is higher. For example, a policy might cover up to $10,000 for hospitalisation but cap room rent at $150 per day.\",\n    \"Deductible is the amount you must pay out-of-pocket for medical services before your insurance company starts to pay. For example, if your deductible is $1,000, you pay the first $1,000 of covered services yourself.\",\n    \"Insurance Network refers to a group of healthcare providers (doctors, hospitals, clinics) that have a contract with an insurance company to provide services at negotiated rates. 'In-network' providers typically result in lower out-of-pocket costs for the insured compared to 'out-of-network' providers.\"\n  ],\n  \"summary\": \"The claim for a general check-up at City Care Hospital with an estimated cost of $300 has been reviewed. Based on the available information, no specific policy co-payments, room rent sub-limits, or exclusions were indicated. The network status of City Care Hospital was not specified within the provided context, therefore no out-of-network implications could be assessed. A full risk audit typically relies on comprehensive policy coverage details and network status to identify potential areas of concern.\"\n}",
+      "scores": {
+        "correctness": 1,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 1,
+        "overall": 3.0,
+        "verdict": "The agent provided clear explanations of insurance terms but failed to correctly identify the expected rejection reason (non-network status) and did not offer actionable guidance specific to the user's claim."
+      }
+    },
+    {
+      "case_id": "excluded_treatment_rejection",
+      "prompt": "I need to file a cashless claim under policy POL123 at Fortis Hospital for Dental Cleaning. It costs around $200.",
+      "expected_outcome": "rejected_excluded",
+      "agent_response": "{\n  \"traps\": [],\n  \"explanations\": [\n    \"A co-pay, or co-payment, is a fixed amount you pay for a covered healthcare service after you've paid your deductible. For example, you might pay $20 for a doctor's visit, and your insurance pays the rest.\",\n    \"A sub-limit is a cap on the amount an insurer will pay for a specific type of expense or treatment, even if your overall policy limit is higher. For example, a policy might cover $10,000 in total, but only $200 per day for room rent.\",\n    \"A deductible is the amount of money you must pay out-of-pocket for healthcare services before your insurance company begins to pay. For example, if your deductible is $1,000, you pay the first $1,000 of your medical bills.\",\n    \"An insurance network refers to a group of healthcare providers (doctors, hospitals, clinics) that have a contract with an insurance company to provide services at pre-negotiated rates. Staying within your network usually means lower costs.\"\n  ],\n  \"summary\": \"The claim pertains to a Dental Cleaning at Fortis Hospital, with an estimated cost of $200 under policy POL123. The provided data does not specify any applicable co-payments, room rent sub-limits, or policy exclusions. The hospital's network status in relation to this policy is also not detailed in the given information.\"\n}",
+      "scores": {
+        "correctness": 1,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 1,
+        "overall": 3.0,
+        "verdict": "The agent completely missed the expected outcome, failing to address the likely exclusion of dental cleaning, and instead offered generic definitions without actionable guidance for the user's specific claim."
+      }
+    },
+    {
+      "case_id": "claim_with_traps_copay",
+      "prompt": "I want to admit myself at Max Hospital for an appendix operation. My policy is POL123 and the cost is $3000.",
+      "expected_outcome": "human_gate",
+      "agent_response": "{\n  \"traps\": [],\n  \"explanations\": [\n    \"Co-payment (Co-pay) is a fixed amount or a percentage of the cost that you must pay for a covered healthcare service after you've paid your deductible.\",\n    \"Sub-limit refers to a maximum amount an insurance policy will pay for a specific type of expense, treatment, or during a particular period, even if your overall sum insured is higher.\",\n    \"Deductible is the amount of money you must pay out-of-pocket for medical expenses before your insurance company starts to pay.\",\n    \"Network refers to the group of healthcare providers (doctors, hospitals, clinics) that have an agreement with your insurance company to offer services at negotiated rates. Using providers outside this network often results in higher out-of-pocket costs.\"\n  ],\n  \"summary\": \"The claim pertains to policy POL123 for an appendix operation at Max Hospital, with an estimated cost of $3000. Based on the provided information, no details regarding the hospital's network status, specific co-payment percentages, room rent sub-limits, deductibles, or any applicable exclusions are available. Therefore, a comprehensive assessment of potential out-of-pocket expenses or coverage limitations cannot be fully determined from the data provided.\"\n}",
+      "scores": {
+        "correctness": 4,
+        "trap_detection": 1,
+        "plain_language": 5,
+        "helpfulness": 2,
+        "overall": 3.0,
+        "verdict": "The agent correctly concluded that more information was needed, explained insurance terms clearly, but failed to populate the 'traps' field and did not provide actionable next steps for the user."
+      }
+    },
+    {
+      "case_id": "lingo_explanation_request",
+      "prompt": "What does co-payment mean? My claim form says I have a 10% co-pay and I don't understand it.",
+      "expected_outcome": "explanation",
+      "agent_response": "{\n  \"traps\": [],\n  \"explanations\": [\n    \"Co-pay: This is a fixed amount or a percentage of the cost of a medical service that you are required to pay at the time of service. For example, a '10% co-pay' means you pay 10% of the bill, and your insurance covers the remaining 90%.\",\n    \"Sub-limit: This is a cap or maximum amount that your insurance policy will pay for a specific type of expense, such as room rent per day or a particular treatment. Even if your overall sum insured is high, a sub-limit can restrict how much you claim for certain items.\",\n    \"Deductible: This is the amount of money you must pay out-of-pocket for medical expenses before your insurance coverage begins to pay. Once you meet your deductible, your insurance starts covering costs as per your policy terms.\",\n    \"Network: This refers to the group of hospitals, doctors, and other healthcare providers that have an agreement with your insurance company to provide services at negotiated rates. Services received 'in-network' are typically covered at a higher percentage, while 'out-of-network' services may result in higher out-of-pocket costs or limited coverage.\"\n  ],\n  \"summary\": \"The claim evaluation is incomplete as no specific policy ID, hospital, treatment details, or estimated cost were provided in the input. Consequently, no specific co-payments, room rent sub-limits, or exclusions can be identified at this time, and the hospital network status cannot be determined. Further details are required to perform a comprehensive audit.\"\n}",
+      "scores": {
+        "correctness": 3,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 2,
+        "overall": 3.8,
+        "verdict": "The agent correctly explained co-payment with a relevant example but included unrequested definitions and a misleading summary about incomplete claim evaluation, diminishing its overall helpfulness for the specific question."
+      }
+    }
+  ],
+  "average_score": 3.22
+}

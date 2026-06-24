@@ -1,0 +1,61 @@
+{
+  "timestamp": "20260621_165156",
+  "results": [
+    {
+      "case_id": "approved_cashless_claim",
+      "prompt": "I need a cashless claim for policy POL999. I am admitted at Apollo Hospital for a knee surgery. The estimated cost is $2000.",
+      "expected_outcome": "approved",
+      "agent_response": "{\"traps\":[\"20% co-payment applies for orthopedic surgeries under policy POL999.\",\"Room rent limit is capped at $150 per day.\",\"A sub-limit of $1,500 applies specifically to knee joint implants.\"],\"explanations\":[\"Co-payment (Co-pay) refers to a pre-defined percentage of the total claim amount that the policyholder must pay out-of-pocket.\",\"Sub-limit is a specific cap or maximum limit placed on a particular treatment, device, or room category, independent of the overall sum insured.\",\"Network Hospital is a hospital that has partnered with the insurance provider to offer cashless treatment services at pre-negotiated rates.\"],\"summary\":\"The claim for knee surgery at Apollo Hospital estimated at $2,000 faces several risk factors under policy POL999. A strict sub-limit of $1,500 on implants and a room rent cap of $150/day will likely force the policyholder to pay a significant portion of the bill out-of-pocket, compounded by a 20% co-payment on the eligible claim amount.\"}",
+      "scores": {
+        "correctness": 2,
+        "trap_detection": 2,
+        "plain_language": 5,
+        "helpfulness": 2,
+        "overall": 2.8,
+        "verdict": "The agent failed to clearly approve the claim as expected and falsely identified multiple policy traps when none were expected, despite providing excellent plain-language explanations of insurance terms."
+      }
+    },
+    {
+      "case_id": "non_network_hospital_rejection",
+      "prompt": "Please initiate a cashless claim for my policy POL123 at City Care Hospital for a general check-up costing $300.",
+      "expected_outcome": "rejected_non_network",
+      "agent_response": "ERROR: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+      "scores": {
+        "correctness": 1,
+        "trap_detection": 5,
+        "plain_language": 1,
+        "helpfulness": 1,
+        "overall": 2.0,
+        "verdict": "The agent failed to process the request and returned a 503 service unavailable error, resulting in a complete failure to address the user's claim."
+      }
+    },
+    {
+      "case_id": "excluded_treatment_rejection",
+      "prompt": "I need to file a cashless claim under policy POL123 at Fortis Hospital for Dental Cleaning. It costs around $200.",
+      "expected_outcome": "rejected_excluded",
+      "agent_response": "{\"traps\":[\"Routine dental treatments are frequently excluded from standard health policies unless resulting from an accident.\",\"Potential sub-limit capping dental care to a small fraction of the cost.\"],\"explanations\":[\"Exclusion: Specific treatments or services that your insurance policy does not cover.\",\"Sub-limit: A maximum cap or limit on the claim amount allowed for a specific type of treatment.\",\"Co-payment: A sharing of the cost where the policyholder pays a specified percentage of the claim.\"],\"summary\":\"The claim is for an estimated $200 Dental Cleaning at Fortis Hospital. Routine dental care is a common exclusion under standard health insurance policies. If covered, it is usually subject to tight sub-limits or co-pays, meaning the policyholder may have to pay for the treatment out of pocket.\"}",
+      "scores": {
+        "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.5-flash\\nPlease retry in 6.684340967s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '6s'}]}}"
+      }
+    },
+    {
+      "case_id": "claim_with_traps_copay",
+      "prompt": "I want to admit myself at Max Hospital for an appendix operation. My policy is POL123 and the cost is $3000.",
+      "expected_outcome": "human_gate",
+      "agent_response": "ERROR: \nOn how to mitigate this issue, please refer to:\n\nhttps://google.github.io/adk-docs/agents/models/google-gemini/#error-code-429-resource_exhausted\n\n\n429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.5-flash\\nPlease retry in 3.676371309s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '3s'}]}}",
+      "scores": {
+        "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.5-flash\\nPlease retry in 3.47981518s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '3s'}]}}"
+      }
+    },
+    {
+      "case_id": "lingo_explanation_request",
+      "prompt": "What does co-payment mean? My claim form says I have a 10% co-pay and I don't understand it.",
+      "expected_outcome": "explanation",
+      "agent_response": "ERROR: \nOn how to mitigate this issue, please refer to:\n\nhttps://google.github.io/adk-docs/agents/models/google-gemini/#error-code-429-resource_exhausted\n\n\n429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 3.284036377s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '3s'}]}}",
+      "scores": {
+        "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.5-flash\\nPlease retry in 2.52980941s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '2s'}]}}"
+      }
+    }
+  ],
+  "average_score": 2.4
+}

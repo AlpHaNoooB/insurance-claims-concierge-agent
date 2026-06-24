@@ -1,0 +1,10 @@
+environments:
+  localhost:
+    blocked_tools:
+      - execute_transaction
+roles:
+  concierge:
+    allowed_tools:
+      - check_hospital_network
+      - get_policy_coverage
+      - explain_insurance_lingo

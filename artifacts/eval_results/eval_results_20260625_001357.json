@@ -1,0 +1,76 @@
+{
+  "timestamp": "20260625_001357",
+  "results": [
+    {
+      "case_id": "approved_cashless_claim",
+      "prompt": "I need a cashless claim for policy POL999. I am admitted at Apollo Hospital for a knee surgery. The estimated cost is $2000.",
+      "expected_outcome": "approved",
+      "agent_response": "{\"traps\": [], \"explanations\": [\"A co-payment is a fixed amount or a percentage of the cost you pay for a healthcare service after you've paid your deductible. For example, if your policy has a 10% co-pay, you would pay 10% of the bill, and the insurer pays the remaining 90%.\", \"A sub-limit is a cap on the amount an insurer will pay for a specific type of expense or treatment, even if your overall policy limit is higher. For instance, a policy might have an overall limit of $100,000 but a sub-limit of $500 for a specific diagnostic test or $150/day for room rent.\", \"A deductible is the amount you must pay out-of-pocket for healthcare services before your insurance company begins to pay. Once you meet your deductible, your insurance starts covering costs according to your policy's terms (e.g., paying 80% if there's a 20% co-pay).\", \"Network refers to the group of hospitals, doctors, and other healthcare providers that have an agreement with your insurance company to provide services at negotiated rates. Using providers outside your insurer's network can lead to higher out-of-pocket costs or reduced coverage.\"], \"summary\": \"The provided context includes the policy ID, hospital, treatment, and estimated cost, but lacks crucial policy coverage details such as specific co-payment percentages, sub-limits (e.g., for room rent, specific procedures), deductibles, or network status. Without these policy terms, a comprehensive claims risk audit cannot be performed to identify hidden traps or evaluate the actual payable amount. To proceed, full policy terms and conditions are required to check for potential out-of-pocket expenses for the insured.\"}",
+      "scores": {
+        "correctness": 4,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 5,
+        "overall": 4.8,
+        "verdict": "The agent correctly identified the missing policy information required to process the cashless claim and provided excellent, actionable guidance and clear explanations of insurance terms."
+      }
+    },
+    {
+      "case_id": "non_network_hospital_rejection",
+      "prompt": "Please initiate a cashless claim for my policy POL123 at City Care Hospital for a general check-up costing $300.",
+      "expected_outcome": "rejected_non_network",
+      "agent_response": "{\"traps\": [], \"explanations\": [\"Co-pay is a fixed amount you pay for a covered health care service after you've paid your deductible. For example, you might pay $20 for a doctor's visit, and your insurance pays the rest.\", \"Sub-limit is a maximum amount an insurance policy will pay for a specific type of service or treatment, even if the overall policy limit has not been reached. For instance, a policy might cover up to $1,000,000 in total, but only $5,000 for physiotherapy.\", \"Deductible is the amount you must pay for covered health care services before your insurance plan starts to pay. For example, if your deductible is $1,000, you pay the first $1,000 of your medical bills yourself before your insurance begins to cover costs.\", \"Network refers to a group of health care providers (like doctors, hospitals, and clinics) that have agreed to provide services to members of an insurance plan at negotiated rates. Staying within your plan's network usually results in lower out-of-pocket costs.\"], \"summary\": \"The provided information for the claim (general check-up, estimated cost $300) is limited. While the treatment type and cost suggest a routine, generally covered service, a comprehensive risk audit requires specific policy details such as any applicable co-payments, deductibles, sub-limits for specific services, and confirmation of whether 'City Care Hospital' is an in-network provider. Without these crucial details, specific financial 'traps' cannot be identified, and the claim is presumed to be straightforward pending further policy information.\"}",
+      "scores": {
+        "correctness": 1,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 2,
+        "overall": 3.3,
+        "verdict": "The agent failed to correctly route the claim as rejected due to a non-network hospital, but excelled at explaining insurance terminology in simple language."
+      }
+    },
+    {
+      "case_id": "excluded_treatment_rejection",
+      "prompt": "I need to file a cashless claim under policy POL123 at Fortis Hospital for Dental Cleaning. It costs around $200.",
+      "expected_outcome": "rejected_excluded",
+      "agent_response": "{\n  \"traps\": [],\n  \"explanations\": [\n    \"Co-payment (Co-pay): This is a fixed amount or a percentage of the treatment cost that you are required to pay directly to the healthcare provider at the time of service. The insurance company then covers the remaining eligible amount.\",\n    \"Sub-limit: This refers to a maximum limit set by the insurance policy for specific expenses or types of treatment, even if your overall sum insured is higher. For example, there might be a sub-limit for room rent per day or for specific procedures like dental treatments.\",\n    \"Exclusion: These are specific conditions, treatments, or services that your insurance policy will not cover. Common exclusions can include cosmetic procedures, pre-existing conditions (for a certain period), or specific dental procedures.\",\n    \"Network (In-network/Out-of-network): An 'in-network' hospital or provider has a pre-arranged agreement with your insurance company regarding service costs and billing. Visiting an 'in-network' provider usually results in lower out-of-pocket costs for you. An 'out-of-network' provider does not have such an agreement, and you might have to pay a larger portion of the bill or the full amount and seek reimbursement.\"\n  ],\n  \"summary\": \"The claim for Dental Cleaning at Fortis Hospital with an estimated cost of $200.0 cannot be fully evaluated for potential issues without crucial policy coverage details. Information regarding any applicable co-payments for dental procedures, deductibles, specific sub-limits (e.g., for dental treatments), and whether dental cleaning is covered under this policy (i.e., not an exclusion) is currently missing. The network status of Fortis Hospital is also needed to determine potential cost implications. Without these details, it's impossible to identify specific 'traps' such as out-of-pocket expenses or limitations on coverage.\"\n}",
+      "scores": {
+        "correctness": 1,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 2,
+        "overall": 3.3,
+        "verdict": "The agent provided excellent explanations of insurance terms and correctly identified no traps, but it failed to reach the expected 'rejected_excluded' outcome, instead requesting more information and thus limiting its immediate helpfulness for the user's request."
+      }
+    },
+    {
+      "case_id": "claim_with_traps_copay",
+      "prompt": "I want to admit myself at Max Hospital for an appendix operation. My policy is POL123 and the cost is $3000.",
+      "expected_outcome": "human_gate",
+      "agent_response": "{\n  \"traps\": [],\n  \"explanations\": [],\n  \"summary\": \"The provided context only includes the policy ID, hospital, treatment, and estimated cost. Policy coverage details, such as co-payments, sub-limits (e.g., for room rent), deductibles, exclusions, or the network status of Max Hospital, are not available. Therefore, a comprehensive claims risk audit to identify specific traps or coverage limitations cannot be performed with the current information.\"\n}",
+      "scores": {
+        "correctness": 4,
+        "trap_detection": 1,
+        "plain_language": 1,
+        "helpfulness": 2,
+        "overall": 2.0,
+        "verdict": "The agent correctly identified that it lacked sufficient information to process the request, aligning with the need for a human gate, but failed to identify expected traps, explain complex terms, or offer clear next steps for the user."
+      }
+    },
+    {
+      "case_id": "lingo_explanation_request",
+      "prompt": "What does co-payment mean? My claim form says I have a 10% co-pay and I don't understand it.",
+      "expected_outcome": "explanation",
+      "agent_response": "{\"traps\": [], \"explanations\": [\"Co-payment (Co-pay) means a fixed amount or a percentage of the total medical cost that you are required to pay for a healthcare service after you've paid your deductible. For example, a 10% co-pay means you pay 10% of the bill, and the insurer pays the rest.\", \"Sub-limit means a cap or maximum amount that your insurance policy will pay for a specific type of expense or treatment, even if your overall policy limit is higher. For instance, a room rent sub-limit of $150/day means the insurer will only cover up to $150 for your room per day, regardless of the actual cost.\", \"Deductible means the amount of money you must pay out-of-pocket for healthcare services before your insurance company starts to pay.\", \"Network refers to the group of doctors, hospitals, and other healthcare providers that have an agreement with your insurance company to provide services at negotiated rates. Using providers outside the network typically results in higher costs for you.\"], \"summary\": \"No specific traps related to co-pays, sub-limits, or room rent limits could be identified as no policy coverage details or network status were provided in the input. A comprehensive claim evaluation requires detailed policy terms to assess potential out-of-pocket expenses.\"}",
+      "scores": {
+        "correctness": 4,
+        "trap_detection": 5,
+        "plain_language": 5,
+        "helpfulness": 5,
+        "overall": 4.8,
+        "verdict": "The agent provided a highly accurate and clear explanation of 'co-payment,' directly addressing the user's specific example, and further enhanced helpfulness with well-explained related insurance terms, though some were not explicitly requested."
+      }
+    }
+  ],
+  "average_score": 3.6399999999999997
+}

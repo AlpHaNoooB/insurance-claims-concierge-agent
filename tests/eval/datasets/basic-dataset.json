@@ -1,0 +1,39 @@
+{
+  "eval_cases": [
+    {
+      "eval_case_id": "approved_cashless_claim",
+      "prompt": {
+        "role": "user",
+        "parts": [{"text": "I need a cashless claim for policy POL999. I am admitted at Apollo Hospital for a knee surgery. The estimated cost is $2000."}]
+      }
+    },
+    {
+      "eval_case_id": "non_network_hospital_rejection",
+      "prompt": {
+        "role": "user",
+        "parts": [{"text": "Please initiate a cashless claim for my policy POL123 at City Care Hospital for a general check-up costing $300."}]
+      }
+    },
+    {
+      "eval_case_id": "excluded_treatment_rejection",
+      "prompt": {
+        "role": "user",
+        "parts": [{"text": "I need to file a cashless claim under policy POL123 at Fortis Hospital for Dental Cleaning. It costs around $200."}]
+      }
+    },
+    {
+      "eval_case_id": "claim_with_traps_copay",
+      "prompt": {
+        "role": "user",
+        "parts": [{"text": "I want to admit myself at Max Hospital for an appendix operation. My policy is POL123 and the cost is $3000."}]
+      }
+    },
+    {
+      "eval_case_id": "lingo_explanation_request",
+      "prompt": {
+        "role": "user",
+        "parts": [{"text": "What does co-payment mean? My claim form says I have a 10% co-pay and I don't understand it."}]
+      }
+    }
+  ]
+}
