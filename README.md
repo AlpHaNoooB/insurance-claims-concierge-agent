@@ -105,11 +105,15 @@ echo 'GEMINI_API_KEY="your-api-key-here"' > .env
 # Install dependencies
 agents-cli install
 
-# Launch the interactive playground
+# 1. Launch the ADK backend (Agent Workflow)
 agents-cli playground
-```
 
-### Example Prompts to Try
+# 2. In a NEW terminal, launch the Manager Dashboard (Custom UI)
+uv run uvicorn app_server:app --port 8000
+```
+Then open `http://localhost:8000` in your browser to view the Claims Adjuster Dashboard.
+
+### Example Prompts to Try in the ADK Playground
 
 ```
 ✅ Approved path:
@@ -117,6 +121,7 @@ agents-cli playground
 
 ⚠️ Trap detected (10% co-pay + room-rent limit):
 "I want to admit at Max Hospital for an appendix operation under policy POL123, cost around $3000."
+*This will pause the workflow and appear on the Dashboard (localhost:8000) for your approval!*
 
 ❌ Non-network rejection:
 "Please initiate a claim for POL123 at City Care Hospital for a check-up."
@@ -133,17 +138,8 @@ agents-cli playground
 # Run unit tests (tool-level validation)
 uv run pytest tests/unit/ -v
 
-# Run all tests
-uv run pytest tests/ -v
-
-# Generate eval traces
-agents-cli eval generate
-
-# Grade the agent (LLM-as-judge)
-agents-cli eval grade
-
-# View analysis report
-agents-cli eval analyze
+# Run the automated LLM-as-judge evaluation script (Tests all 5 scenarios)
+uv run python tests/eval/run_eval.py
 ```
 
 ---
@@ -159,17 +155,16 @@ claims-agent/
 │   └── app_utils/            # Utilities and helpers
 ├── data/
 │   └── claims_db.json        # Mock insurance database (hospitals + policies)
+├── static/
+│   ├── index.html            # Dashboard Frontend (Glassmorphism UI)
+│   └── style.css             # Dashboard Styles
+├── app_server.py             # FastAPI backend connecting Dashboard to ADK API
 ├── tests/
 │   ├── unit/
-│   │   └── test_agent_tools.py   # 6 unit tests, all passing ✅
+│   │   └── test_agent_tools.py   # Unit tests
 │   └── eval/
-│       ├── eval_config.yaml      # LLM-as-judge rubrics (claims quality + trap accuracy)
-│       └── datasets/
-│           └── basic-dataset.json  # 5 real-world claim scenarios
-├── specs/                    # BDD Gherkin specifications (SDD approach)
-├── deployment/               # Cloud Run / Agent Runtime config
-├── GEMINI.md                 # AI-assisted development context
-├── pyproject.toml            # Project dependencies
+│       └── run_eval.py           # Automated LLM-as-judge evaluation suite
+├── pyproject.toml            # Project dependencies (FastAPI, uvicorn, ADK)
 └── README.md                 # This file
 ```
 

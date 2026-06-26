@@ -115,7 +115,20 @@ def prepare_risk_input(ctx: Context, node_input: Any):
     """Formats the prompt for the risk analysis agent using tool outputs."""
     user_query = ctx.state.get("user_query", "")
     network_status = ctx.state.get("network_status", "")
-    coverage_details = ctx.state.get("coverage_details", "")
+    coverage_details_str = ctx.state.get("coverage_details", "{}")
+    
+    # Pre-parse some flags to force the LLM to see them
+    try:
+        cov = json.loads(coverage_details_str)
+        warnings = []
+        if cov.get("co_pay_percentage", 0) > 0:
+            warnings.append(f"CRITICAL WARNING: Policy has a {cov['co_pay_percentage']}% co-pay!")
+        if cov.get("room_rent_limit", 0) > 0:
+            warnings.append(f"CRITICAL WARNING: Policy has a room rent limit of ${cov['room_rent_limit']}!")
+        
+        warnings_text = "\n".join(warnings) if warnings else "No obvious numerical traps detected."
+    except Exception:
+        warnings_text = ""
     
     prompt = f"""Analyze this insurance claim for hidden traps and risks.
 
@@ -126,9 +139,12 @@ def prepare_risk_input(ctx: Context, node_input: Any):
 {network_status}
 
 === POLICY COVERAGE DETAILS (from tool, JSON) ===
-{coverage_details}
+{coverage_details_str}
 
-Based on the above verified data, identify all traps (co-pays, sub-limits, exclusions) and explain insurance terms in plain English."""
+=== SYSTEM PRE-ANALYSIS WARNINGS ===
+{warnings_text}
+
+Based on the above verified data and warnings, identify all traps (co-pays, sub-limits, exclusions) and explain insurance terms in plain English. YOU MUST INCLUDE THE WARNINGS IN YOUR TRAPS LIST."""
     yield Event(data=prompt)
 
 @node
@@ -143,7 +159,7 @@ def route_claim(ctx: Context, node_input: Any):
         cov = {}
         
     risk_data = ctx.state.get("risk_data", {})
-    traps = risk_data.get("traps", [])
+    traps = risk_data.get("traps", []) if isinstance(risk_data, dict) else getattr(risk_data, "traps", [])
     
     # Check network
     if "NOT in the cashless network" in network_status:
